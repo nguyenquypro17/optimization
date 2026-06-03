@@ -51,21 +51,38 @@ def generate(N, r, k, seed, outpath):
 
 
 if __name__ == "__main__":
-    N = 1200
-    r = 1500
-    k = 600
-    base_seed = 42
-    out_dir = "testcase"
-    os.makedirs(out_dir, exist_ok=True)
+    import argparse
 
-    # Determine starting index (existing test files: test1..test9 => start at 10)
-    start_idx = 10
-    num_cases = 11
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--start",  type=int, default=10,   help="Starting testcase index")
+    parser.add_argument("--count",  type=int, default=11,   help="Number of testcases to generate")
+    parser.add_argument("--N",      type=int, default=None, help="Fixed N (overrides ramp)")
+    parser.add_argument("--r",      type=int, default=None, help="Fixed r (overrides ramp)")
+    parser.add_argument("--k",      type=int, default=None, help="Fixed k (overrides ramp)")
+    parser.add_argument("--N0",     type=int, default=1200, help="Ramp start N")
+    parser.add_argument("--N1",     type=int, default=1200, help="Ramp end N")
+    parser.add_argument("--r0",     type=int, default=1500, help="Ramp start r")
+    parser.add_argument("--r1",     type=int, default=1500, help="Ramp end r")
+    parser.add_argument("--k0",     type=int, default=600,  help="Ramp start k")
+    parser.add_argument("--k1",     type=int, default=600,  help="Ramp end k")
+    parser.add_argument("--seed",   type=int, default=42,   help="Base random seed")
+    parser.add_argument("--outdir", type=str, default="testcase")
+    args = parser.parse_args()
 
-    for i in range(num_cases):
-        idx = start_idx + i
-        seed = base_seed + i * 137
-        outpath = os.path.join(out_dir, f"test{idx}.txt")
+    os.makedirs(args.outdir, exist_ok=True)
+    n = args.count
+
+    for i in range(n):
+        idx = args.start + i
+        seed = args.seed + i * 137
+
+        # Linear ramp if not fixed
+        frac = i / max(n - 1, 1)
+        N = args.N if args.N else round(args.N0 + frac * (args.N1 - args.N0))
+        r = args.r if args.r else round(args.r0 + frac * (args.r1 - args.r0))
+        k = args.k if args.k else round(args.k0 + frac * (args.k1 - args.k0))
+
+        outpath = os.path.join(args.outdir, f"test{idx}.txt")
         generate(N, r, k, seed, outpath)
 
     print("Done.")

@@ -1,21 +1,15 @@
 """
-Finetune (grid search) hyperparameter cho 2 thuat toan ACO va GA
-tren bo 20 testcase.
-
-Cach lam giong finetune_hillclimb.py:
-  - Moi task = 1 testcase (parse 1 lan, chay tat ca config tuan tu ben trong).
-  - Song song cac testcase bang multiprocessing.
-  - Cham diem moi config theo so lan ve nhat (rank-1) tren cac testcase,
-    so sanh (F1, F2) theo thu tu tu dien (lexicographic).
-  - Goi truc tiep run_aco / run_ga tu solver_aco.py va solver_ga.py
-    => khong copy lai thuat toan, luon dong bo voi solver.
+Finetune hyperparameters cho ACO va GA tren toan bo 50 testcase.
 
 Usage:
     python finetune_ga_aco.py --algo aco            # chi ACO
     python finetune_ga_aco.py --algo ga             # chi GA
     python finetune_ga_aco.py --algo both           # ca hai (mac dinh)
     python finetune_ga_aco.py --algo aco --time 5   # 5s moi lan chay
-    python finetune_ga_aco.py --algo ga --cores 8   # 8 worker
+    python finetune_ga_aco.py --algo ga --cores 40  # 40 worker
+
+Mo hinh song song: 1 worker = 1 testcase (parse 1 lan, chay tat ca config tuan tu).
+Wall time thuc = ceil(n_testcase / n_workers) * n_configs * time_limit.
 """
 
 import os
@@ -151,7 +145,7 @@ def finetune(algo, testcases, time_limit, n_workers, out_lines):
     configs = build_configs(algo)
     n_tc = len(testcases)
     n_cfg = len(configs)
-    est_wall = n_tc * n_cfg * time_limit / n_workers
+    est_wall = -(-n_tc // n_workers) * n_cfg * time_limit  # ceil(n_tc/n_workers) * n_cfg * time_limit
 
     header = (f"\n{'='*72}\n"
               f"GRID SEARCH: {algo.upper()}\n"

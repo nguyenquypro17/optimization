@@ -2,7 +2,7 @@
 Finetune move probabilities for solver_hillclimb.py.
 
 Grid search over (p_relocate, p_swap) combinations.
-Each config is scored by running on all 20 testcases.
+Each config is scored by running on all 50 testcases.
 Best config = most rank-1 finishes (fewest (F1,F2) lexicographically).
 
 Usage:
@@ -258,8 +258,8 @@ def run_testcase(args):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--time", type=float, default=5.0,
-                        help="Time limit per run in seconds (default 5)")
+    parser.add_argument("--time", type=float, default=3.0,
+                        help="Time limit per run in seconds (default 3)")
     parser.add_argument("--cores", type=int, default=os.cpu_count(),
                         help="Number of parallel workers (default: all cores)")
     args = parser.parse_args()
@@ -283,9 +283,7 @@ def main():
                 configs.append((pr, ps))
     n_cfg = len(configs)
 
-    total_runs  = n_tc * n_cfg
-    est_serial  = total_runs * TIME_LIMIT
-    est_wall    = est_serial / N_WORKERS
+    est_wall = -(-n_tc // N_WORKERS) * n_cfg * TIME_LIMIT  # ceil(n_tc/workers) * n_cfg * time_limit
 
     print("=" * 60)
     print(f"Testcases    : {n_tc}")

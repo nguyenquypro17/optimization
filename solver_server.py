@@ -2,8 +2,7 @@ import sys
 from ortools.sat.python import cp_model
 
 def parse_input():
-    tokens = sys.stdin.read().split()
-    if not tokens: return None
+    tokens = sys.stdin.read().split() 
     
     N = int(tokens[1])
     nd = int(tokens[3])

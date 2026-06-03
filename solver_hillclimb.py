@@ -47,8 +47,6 @@ def parse():
 # ============================================================
 def main():
     data = parse()
-    if not data:
-        return
     t = data["t"]; TL = data["trailer_loc"]; TT = data["trailer_time"]
     trucks = list(data["truck_depot"].keys())
     depot = data["truck_depot"]
@@ -131,7 +129,7 @@ def main():
         it += 1
         move = random.random()
 
-        if move < 0.6:
+        if move < 0.6: # có thể tune
             # RELOCATE: chuyen 1 yeu cau sang vi tri khac (co the cung dau keo)
             # uu tien lay tu dau keo dang la makespan
             if no_improve % 3 == 0:
@@ -177,7 +175,7 @@ def main():
                     complete_c[src] = sc_s; complete_c[dst] = sc_d
                     no_improve += 1
 
-        elif move < 0.85 and nT >= 2:
+        elif move < 0.85 and nT >= 2: # có thể tune
             # SWAP: doi cho 2 yeu cau giua 2 dau keo
             k1, k2 = random.sample(trucks, 2)
             if not assign[k1] or not assign[k2]:

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Truck Container Scheduling - CP-SAT (OR-Tools)
 Mo hinh hoa theo file CP_Model_TruckContainerScheduling.md

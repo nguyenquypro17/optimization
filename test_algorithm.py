@@ -26,10 +26,10 @@ from finetune_hillclimb import solve as hc_solve
 HC_BEST = {"p_relocate": 0.80, "p_swap": 0.10}
 
 # GA  : update dict below after running:  python finetune_ga_aco.py --algo ga
-GA_BEST = {"pop_size": 60, "cx_rate": 0.8, "mut_rate": 0.2, "tourn_size": 3}
+GA_BEST = {"pop_size": 60, "cx_rate": 0.6, "mut_rate": 0.3, "tourn_size": 5}
 
 # ACO : update dict below after running:  python finetune_ga_aco.py --algo aco
-ACO_BEST = {"n_ants": 10, "alpha": 1.0, "beta": 2.0, "rho": 0.1,
+ACO_BEST = {"n_ants": 5, "alpha": 2.0, "beta": 3.0, "rho": 0.5,
             "Q": 1000.0, "ls_steps": 300}
 
 # ─────────────────────────────────────────────────────────────────────────────
